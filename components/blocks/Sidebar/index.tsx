@@ -6,28 +6,35 @@ import {
 import {
   Sidebar,
   SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
   SidebarMenu,
+  SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Table } from "lucide-react";
-import { ReactNode } from "react";
+import Link from "next/link";
+import { FC, JSX, ReactNode } from "react";
 
 interface MenuItem {
   text: string;
   href: string;
-  link?: ReactNode;
+  icon: FC;
 }
 
 const links: MenuItem[] = [
-  { text: "Обзор", href: "/", link: <Table /> },
-  { text: "Обзор", href: "/", link: <Table /> },
+  { text: "Обзор", href: "/", icon: Table },
+  { text: "Обзор", href: "/", icon: Table },
 ];
 const MenuItem = ({ item }: { item: MenuItem }) => {
   return (
     <SidebarMenuItem>
-      <NavigationMenuLink href={item.href} className="flex-row items-center">
-        <Badge>{item.link}</Badge> <span className="text-xl">{item.text}</span>
-      </NavigationMenuLink>
+      <SidebarMenuButton>
+        <Link href={item.href} className="flex flex-row items-center gap-2">
+          <item.icon />
+          <span className="text-xl">{item.text}</span>
+        </Link>
+      </SidebarMenuButton>
     </SidebarMenuItem>
   );
 };
@@ -36,13 +43,15 @@ export const AppSidebar = () => {
   return (
     <Sidebar>
       <SidebarContent>
-        <SidebarMenu>
-          <NavigationMenu className="w-full flex flex-col max-w-full">
-            {links.map((link, i) => (
-              <MenuItem item={link} key={i} />
-            ))}
-          </NavigationMenu>
-        </SidebarMenu>
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {links.map((link, i) => (
+                <MenuItem item={link} key={i} />
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
     </Sidebar>
   );
