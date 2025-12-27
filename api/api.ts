@@ -21,6 +21,7 @@ axiosInstance.interceptors.response.use(
     const status = error.response?.status;
     const originalRequest = error.config as any;
 
+    console.log(originalRequest.url)
     // если 401, пробуем обновить токен
     if (
       status === 401 &&
@@ -30,7 +31,8 @@ axiosInstance.interceptors.response.use(
       originalRequest.url != `${config.BASE_API_URL}/auth/logout`
     ) {
       //чтобы избежать бесконечного цикла
-      originalRequest.retry = true;
+      originalRequest._retry = true;
+
 
       // если на сервере — ничего не делаем, просто пробрасываем ошибку
       // так как по задумке каждый запрос, который идет от серверного компонента - ОБЯЗАН иметь актуальный access токен
@@ -61,8 +63,8 @@ axiosInstance.interceptors.response.use(
       } catch (refreshError: any) {
         // если refresh тоже вернул 401 → logout || 500
         if (
-          refreshError?.response?.status === 401 ||
-          refreshError?.response?.status === 500
+          (refreshError?.response?.status === 401 ||
+          refreshError?.response?.status === 500)
         ) {
           await Logout();
           queryClient.removeQueries({

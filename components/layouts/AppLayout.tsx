@@ -6,7 +6,9 @@ export const AppLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarTrigger />
+      <div>
+        <SidebarTrigger className="absolute z-10" />
+      </div>
       {children}
     </SidebarProvider>
   );

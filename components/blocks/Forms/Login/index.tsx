@@ -20,11 +20,13 @@ import {
   ButtonGroupSeparator,
 } from "@/components/ui/button-group";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export const ACCESS_TOKEN_QUERY_KEY: readonly [unknown] = ["accessToken"];
 
 export default function LoginForm() {
   const loginMutation = useLogin();
+  const router = useRouter()
 
   const formSchema = z.object({
     email: z.email({ error: "Некорректный email" }),
@@ -41,6 +43,7 @@ export default function LoginForm() {
 
   const handleSubmit: SubmitHandler<LoginRequest> = async (data) => {
     loginMutation.mutate(data);
+    router.replace("/dashboard")
   };
   return (
     <div className="m-auto w-full max-w-8/12 lg:max-w-4/12 h-full">

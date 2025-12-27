@@ -11,7 +11,7 @@ export function useLogin() {
       return Login({ email: data.email, password: data.password });
     },
     onSuccess: ({ status, data }) => {
-      queryClient.setQueryData([ACCESS_TOKEN_QUERY_KEY], data?.token);
+      queryClient.setQueryData([ACCESS_TOKEN_QUERY_KEY], data?.token, );
     },
   });
 }
