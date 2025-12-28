@@ -1,19 +1,28 @@
 "use client";
 
-import { getGuestsVisits } from "@/api/api";
+import { getGuestsVisits, getVisitsByInterval } from "@/api/api";
+import { VisitsByPeriodChart } from "@/components/blocks/Charts/VisitsByPeriodChart";
 import { Button } from "@/components/ui/button";
-import { ButtonGroup, ButtonGroupText } from "@/components/ui/button-group";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartLegend,
-  ChartLegendContent,
 } from "@/components/ui/chart";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
+import { SelectLabel } from "@radix-ui/react-select";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import { Bar, BarChart, Line, LineChart } from "recharts";
+import { useEffect, useState } from "react";
+import { Bar, BarChart } from "recharts";
 
 function ButtonBar() {
   const [selected, setSelected] = useState(0);
@@ -51,7 +60,7 @@ function ButtonBar() {
 
   return (
     <Card>
-      <CardContent>
+      <CardContent className="flex gap-2">
         <ButtonGroup>
           {options.map((option, index) => (
             <Button
@@ -63,6 +72,18 @@ function ButtonBar() {
             </Button>
           ))}
         </ButtonGroup>
+        <Select defaultValue="10minutes">
+          <SelectTrigger className="w-45">
+            <SelectValue placeholder="Период" />
+          </SelectTrigger>
+          <SelectGroup>
+            <SelectContent>
+              <SelectLabel>Период</SelectLabel>
+              <SelectItem value="10minutes">по 10 минут</SelectItem>
+              <SelectItem value="hours">по часам</SelectItem>
+            </SelectContent>
+          </SelectGroup>
+        </Select>
       </CardContent>
     </Card>
   );
@@ -71,7 +92,7 @@ function ButtonBar() {
 export default function DashboardPage() {
   const visitsData = useQuery({
     queryKey: ["visits"],
-    queryFn: () => getGuestsVisits(1),
+    queryFn: () => getVisitsByInterval(1, "2014-11-12T11:45:26.371Z", "2026-11-12T11:45:26.371Z", 10, 10),
     staleTime: Infinity,
   });
 
@@ -95,20 +116,22 @@ export default function DashboardPage() {
     },
   } satisfies ChartConfig;
 
+  useEffect(() => {
+    console.log(visitsData.data?.sessions);
+  }, [visitsData.data?.sessions]);
+
   if (visitsData.isError) throw visitsData.error;
 
-  if (visitsData.isLoading) return <Skeleton className="h-screen" />;
+  if (visitsData.isLoading || !visitsData.data)
+    return <Skeleton className="h-screen" />;
+
+  // console.log(visitsData.data.sessions)
 
   return (
     <div>
       <ButtonBar />
-      <ChartContainer config={chartConfig} className="max-h-1/6 max-w-full">
-        <LineChart accessibilityLayer data={chartData}>
-          <Line dataKey="desktop" fill="var(--color-desktop)" radius={4} />
-          <Line dataKey="mobile" fill="var(--color-mobile)" radius={4} />
-          <ChartLegend></ChartLegend>
-        </LineChart>
-      </ChartContainer>
+      {/* {visitsData.data?.sessions.length} */}
+      <VisitsByPeriodChart />
     </div>
   );
 }

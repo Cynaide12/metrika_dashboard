@@ -127,6 +127,8 @@ export async function Logout(): Promise<Response> {
   }
 }
 
+
+
 export async function getGuestsVisits(
   domain_id: number
 ): Promise<GuestsVisitsResponse> {
@@ -138,7 +140,30 @@ export async function getGuestsVisits(
     );
     return res.data;
   } catch (e: any) {
-    console.error("ошибка авторизации:", e.response?.data?.message);
+    throw e;
+  }
+}
+
+export async function getVisitsByInterval(
+  domain_id: number,
+  start: string,
+  end: string,
+  interval: number,
+  diviser: number,
+): Promise<GuestsVisitsResponse> {
+  const token = queryClient.getQueryData([ACCESS_TOKEN_QUERY_KEY]);
+  try {
+    const res = await axiosInstance.get<GuestsVisitsResponse>(
+      `${config.BASE_API_URL}/metrika/${domain_id}/guests/byinterval`,
+      { headers: { Authorization: `Bearer ${token}` }, params: {
+        start,
+        end,
+        interval,
+        diviser
+      } }
+    );
+    return res.data;
+  } catch (e: any) {
     throw e;
   }
 }

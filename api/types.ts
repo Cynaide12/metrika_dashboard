@@ -27,6 +27,12 @@ export interface RegisterResponse {
   token:string
 }
 
+export interface GuestsVisitsParams {
+  limit?: number
+  offset?: number
+  guest_id?: number
+}
+
 export interface GuestsVisitsResponse {
   sessions: GuestSession[]
   response: Response
