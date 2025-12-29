@@ -16,24 +16,35 @@ export interface LoginResponse {
 }
 
 export interface RegisterRequest {
-  name: string
-  email: string
-  password: string
-  password_second: string
+  name: string;
+  email: string;
+  password: string;
+  password_second: string;
 }
 
 export interface RegisterResponse {
-  response: Response
-  token:string
+  response: Response;
+  token: string;
 }
 
 export interface GuestsVisitsParams {
-  limit?: number
-  offset?: number
-  guest_id?: number
+  limit?: number;
+  offset?: number;
+  guest_id?: number;
 }
 
 export interface GuestsVisitsResponse {
-  sessions: GuestSession[]
-  response: Response
+  sessions: GuestSession[];
+  response: Response;
 }
+
+export interface GuestSessionByTimeBucket {
+  time_bucket: string;
+  visits: number;
+  uniques: number;
+}
+export interface GuestsVisitsByIntervalResponse {
+  sessions: GuestSessionByTimeBucket[];
+  response: Response;
+}
+

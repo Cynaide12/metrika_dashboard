@@ -3,7 +3,14 @@
 import { config } from "@/config/config";
 import { queryClient } from "@/providers/ReactQueryProvider";
 import axios, { AxiosError } from "axios";
-import { GuestsVisitsResponse, LoginRequest, LoginResponse, RegisterRequest, RegisterResponse } from "./types";
+import {
+  GuestsVisitsByIntervalResponse,
+  GuestsVisitsResponse,
+  LoginRequest,
+  LoginResponse,
+  RegisterRequest,
+  RegisterResponse,
+} from "./types";
 import { ACCESS_TOKEN_QUERY_KEY } from "@/components/blocks/Forms/Login";
 
 export const axiosInstance = axios.create({
@@ -21,7 +28,7 @@ axiosInstance.interceptors.response.use(
     const status = error.response?.status;
     const originalRequest = error.config as any;
 
-    console.log(originalRequest.url)
+    console.log(originalRequest.url);
     // если 401, пробуем обновить токен
     if (
       status === 401 &&
@@ -32,7 +39,6 @@ axiosInstance.interceptors.response.use(
     ) {
       //чтобы избежать бесконечного цикла
       originalRequest._retry = true;
-
 
       // если на сервере — ничего не делаем, просто пробрасываем ошибку
       // так как по задумке каждый запрос, который идет от серверного компонента - ОБЯЗАН иметь актуальный access токен
@@ -63,8 +69,8 @@ axiosInstance.interceptors.response.use(
       } catch (refreshError: any) {
         // если refresh тоже вернул 401 → logout || 500
         if (
-          (refreshError?.response?.status === 401 ||
-          refreshError?.response?.status === 500)
+          refreshError?.response?.status === 401 ||
+          refreshError?.response?.status === 500
         ) {
           await Logout();
           queryClient.removeQueries({
@@ -108,7 +114,8 @@ export async function Register(
     );
     return { data: res.data, status: res.status };
   } catch (e: any) {
-    if(e.status == 409) throw new Error("Пользователь с таким email уже существует")
+    if (e.status == 409)
+      throw new Error("Пользователь с таким email уже существует");
     console.error(e);
     // throw new AxiosError(e)
     throw e;
@@ -126,8 +133,6 @@ export async function Logout(): Promise<Response> {
     return e.response.data;
   }
 }
-
-
 
 export async function getGuestsVisits(
   domain_id: number
@@ -149,18 +154,21 @@ export async function getVisitsByInterval(
   start: string,
   end: string,
   interval: number,
-  diviser: number,
-): Promise<GuestsVisitsResponse> {
+  diviser: number
+): Promise<GuestsVisitsByIntervalResponse> {
   const token = queryClient.getQueryData([ACCESS_TOKEN_QUERY_KEY]);
   try {
-    const res = await axiosInstance.get<GuestsVisitsResponse>(
+    const res = await axiosInstance.get<GuestsVisitsByIntervalResponse>(
       `${config.BASE_API_URL}/metrika/${domain_id}/guests/byinterval`,
-      { headers: { Authorization: `Bearer ${token}` }, params: {
-        start,
-        end,
-        interval,
-        diviser
-      } }
+      {
+        headers: { Authorization: `Bearer ${token}` },
+        params: {
+          start,
+          end,
+          interval,
+          diviser,
+        },
+      }
     );
     return res.data;
   } catch (e: any) {

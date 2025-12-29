@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
+        className={`${geistSans.variable} ${geistMono.variable} dark antialiased min-h-screen flex flex-col`}
       >
         <ReactQueryProvider>
           <ReactQueryDevtools />
