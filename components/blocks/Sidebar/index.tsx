@@ -1,20 +1,20 @@
-import { Badge } from "@/components/ui/badge";
-import {
-  NavigationMenu,
-  NavigationMenuLink,
-} from "@/components/ui/navigation-menu";
+import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Table } from "lucide-react";
+import { Map, SettingsIcon, Table, User } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
-import { FC, JSX, ReactNode } from "react";
+import { FC } from "react";
 
 interface MenuItem {
   text: string;
@@ -23,8 +23,8 @@ interface MenuItem {
 }
 
 const links: MenuItem[] = [
-  { text: "Обзор", href: "/", icon: Table },
-  { text: "Обзор", href: "/", icon: Table },
+  { text: "Обзор", href: "/dashboard", icon: Table },
+  { text: "Карта кликов", href: "/dashboard", icon: Map },
 ];
 const MenuItem = ({ item }: { item: MenuItem }) => {
   return (
@@ -42,7 +42,21 @@ const MenuItem = ({ item }: { item: MenuItem }) => {
 export const AppSidebar = () => {
   return (
     <Sidebar>
-      <SidebarContent>
+      <SidebarHeader>
+        <SidebarMenuButton className="flex justify-center items-center h-15">
+          <Link href="/dashboard">
+            <Image
+              className="dark:invert"
+              src="/logo.svg"
+              alt="Next.js logo"
+              width={230}
+              height={20}
+              priority
+            />
+          </Link>
+        </SidebarMenuButton>
+      </SidebarHeader>
+      <SidebarContent className="h-full">
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -53,6 +67,16 @@ export const AppSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <ButtonGroup className="dark:invert">
+          <Button >
+            <User />
+          </Button>
+          <Button>
+            <SettingsIcon />
+          </Button>
+        </ButtonGroup>
+      </SidebarFooter>
     </Sidebar>
   );
 };
