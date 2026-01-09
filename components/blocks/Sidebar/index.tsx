@@ -11,7 +11,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Map, SettingsIcon, Table, User } from "lucide-react";
+import { Map, SettingsIcon, Table, User, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
@@ -25,6 +25,7 @@ interface MenuItem {
 const links: MenuItem[] = [
   { text: "Обзор", href: "/dashboard", icon: Table },
   { text: "Карта кликов", href: "/dashboard", icon: Map },
+  { text: "Посетители", href: "/dashboard/guests", icon: Users },
 ];
 const MenuItem = ({ item }: { item: MenuItem }) => {
   return (
