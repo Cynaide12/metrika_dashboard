@@ -1,15 +1,18 @@
 "use client";
 
-import { getGuestsVisits, getVisitsByInterval } from "@/api/api";
+import { getGuests, getGuestsVisits, getVisitsByInterval } from "@/api/api";
 import { CalendarDropdown } from "@/components/ui/calendar";
 import { Card, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
   TableBody,
   TableCell,
   TableHead,
+  TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { ru } from "date-fns/locale";
 import { useEffect, useState } from "react";
@@ -27,15 +30,15 @@ export const GuestsTable = () => {
     setSelectedDateRange(date);
   };
 
-  const visitsQuery = useQuery({
+  const guestsQuery = useQuery({
     queryKey: ["guests", selectedDateRange?.from, selectedDateRange?.to],
     //!когда нибудь уже наконец сделать создание и выбор домена
-    queryFn: () => getGuestsVisits(1, selectedDateRange?.from?.toISOString(), selectedDateRange?.to?.toISOString())
-  })
+    queryFn: () => getGuests(1),
+  });
 
   useEffect(() => {
     console.log(selectedDateRange);
-  }, [selectedDateRange]);
+  }, [guestsQuery.data]);
 
   return (
     <Card>
@@ -52,16 +55,37 @@ export const GuestsTable = () => {
         captionLayout="dropdown"
         className="rounded-md border shadow-sm"
       />
-      <Table className="w-full">
-        <TableHead>
-          <TableCell>ID посетителя</TableCell>
-          <TableCell>Первый визит</TableCell>
-          <TableCell>Последний визит визит</TableCell>
-          <TableCell>Всего визитов</TableCell>
-          <TableCell>Общее время на сайте</TableCell>
-        </TableHead>
+      <Table className="w-full h-full">
+        <TableHeader>
+          <TableRow>
+            <TableHead>ID посетителя</TableHead>
+            <TableHead>Первый визит</TableHead>
+            <TableHead>Последний визит</TableHead>
+            <TableHead>Всего визитов</TableHead>
+            <TableHead>Общее время на сайте</TableHead>
+            <TableHead>Статус</TableHead>
+          </TableRow>
+        </TableHeader>
         <TableBody>
-          <TableRow></TableRow>
+          {guestsQuery.isLoading && <TableRow />}
+          {guestsQuery.data &&
+            !guestsQuery.isLoading &&
+            guestsQuery.data?.guests?.map((guest) => (
+              <TableRow key={guest.id}>
+                <TableCell>{guest.id}</TableCell>
+                <TableCell>
+                  {new Date(guest.first_visit || "-").toLocaleDateString()}
+                </TableCell>
+                <TableCell>
+                  {new Date(guest.last_visit || "-").toLocaleDateString()}
+                </TableCell>
+                <TableCell>{guest.sessions_count}</TableCell>
+                <TableCell>позже сделаю</TableCell>
+                <TableCell className={cn(guest.is_online && "text-green-500")}>
+                  {guest.is_online ? "Сейчас на сайте" : "Не в сети"}
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </Card>

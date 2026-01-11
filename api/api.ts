@@ -4,6 +4,8 @@ import { config } from "@/config/config";
 import { queryClient } from "@/providers/ReactQueryProvider";
 import axios, { AxiosError } from "axios";
 import {
+  GuestsParams,
+  GuestsResponse,
   GuestsVisitsByIntervalResponse,
   GuestsVisitsResponse,
   LoginRequest,
@@ -142,6 +144,25 @@ export async function getGuestsVisits(
     const res = await axiosInstance.get<GuestsVisitsResponse>(
       `${config.BASE_API_URL}/metrika/${domain_id}/guests/visits`,
       { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return res.data;
+  } catch (e: any) {
+    throw e;
+  }
+}
+
+export async function getGuests(
+  domain_id: number,
+  opts?: GuestsParams
+): Promise<GuestsResponse> {
+  const token = queryClient.getQueryData([ACCESS_TOKEN_QUERY_KEY]);
+  try {
+    const res = await axiosInstance.get<GuestsResponse>(
+      `${config.BASE_API_URL}/metrika/${domain_id}/guests`,
+      {
+        params: { ...opts },
+        headers: { Authorization: `Bearer ${token}` },
+      }
     );
     return res.data;
   } catch (e: any) {

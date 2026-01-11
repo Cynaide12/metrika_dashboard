@@ -1,4 +1,4 @@
-import { GuestSession } from "./models";
+import { Guest, GuestSession } from "./models";
 
 export declare interface Response {
   status: string;
@@ -38,6 +38,18 @@ export interface GuestsVisitsResponse {
   response: Response;
 }
 
+export interface GuestsParams {
+  limit: number;
+  offset: number;
+  start_date: string;
+  end_date: string;
+}
+
+export interface GuestsResponse {
+  guests: Guest[];
+  response: Response;
+}
+
 export interface GuestSessionByTimeBucket {
   time_bucket: string;
   visits: number;
@@ -47,4 +59,3 @@ export interface GuestsVisitsByIntervalResponse {
   sessions: GuestSessionByTimeBucket[];
   response: Response;
 }
-
