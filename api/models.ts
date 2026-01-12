@@ -11,6 +11,7 @@ export declare interface Guest {
   id: number;
   f_id: number;
   domain_id: number;
+  total_seconds_on_site: number;
   last_visit: string;
   first_visit: string;
   is_online: boolean;

@@ -39,14 +39,15 @@ export interface GuestsVisitsResponse {
 }
 
 export interface GuestsParams {
-  limit: number;
-  offset: number;
-  start_date: string;
-  end_date: string;
+  limit?: number;
+  offset?: number;
+  start_date?: string;
+  end_date?: string;
 }
 
 export interface GuestsResponse {
   guests: Guest[];
+  total: number
   response: Response;
 }
 
