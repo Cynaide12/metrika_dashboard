@@ -5,6 +5,7 @@ import { VisitsByPeriodChart } from "@/components/blocks/Charts/VisitsByPeriodCh
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
 import { Card, CardContent } from "@/components/ui/card";
+import { PageContainer } from "@/components/ui/page-container";
 import {
   Select,
   SelectContent,
@@ -147,7 +148,7 @@ export default function DashboardPage() {
     return <Skeleton className="h-screen" />;
 
   return (
-    <div>
+    <PageContainer>
       <ButtonBar
         selectedDateRange={selectedDateRange}
         selectedTimeInterval={selectedTimeInterval}
@@ -156,6 +157,6 @@ export default function DashboardPage() {
       />
       {/* {visitsData.data?.sessions.length} */}
       <VisitsByPeriodChart data={visitsData.data.sessions} />
-    </div>
+    </PageContainer>
   );
 }

@@ -3,9 +3,5 @@ import { PageContainer } from "@/components/ui/page-container";
 import { PropsWithChildren } from "react";
 
 export default function DashboardLayout({ children }: PropsWithChildren) {
-  return (
-    <AppLayout>
-      <PageContainer>{children}</PageContainer>
-    </AppLayout>
-  );
+  return <AppLayout>{children}</AppLayout>;
 }

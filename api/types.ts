@@ -43,6 +43,8 @@ export interface GuestsParams {
   offset?: number;
   start_date?: string;
   end_date?: string;
+  order?: string
+  order_type?: string
 }
 
 export interface GuestsResponse {
