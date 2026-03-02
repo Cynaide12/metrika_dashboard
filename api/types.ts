@@ -1,4 +1,4 @@
-import { Guest, GuestSession } from "./models";
+import { Guest, GuestSession, RecordEvent } from "./models";
 
 export declare interface Response {
   status: string;
@@ -57,5 +57,12 @@ export interface GuestSessionByTimeBucket {
 }
 export interface GuestsVisitsByIntervalResponse {
   sessions: GuestSessionByTimeBucket[];
+  response: Response;
+}
+
+
+
+export interface RecordEventsRespomce {
+  events: RecordEvent[];
   response: Response;
 }

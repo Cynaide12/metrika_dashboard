@@ -16,3 +16,18 @@ export declare interface Guest {
   is_online: boolean;
   sessions_count: number;
 }
+
+// type RecordEvent struct {
+// 	ID        uint           `json:"id"`
+// 	SessionID uint           `json:"session_id"`
+// 	Type      int            `json:"type"`
+// 	Timestamp int64          `json:"timestamp"`
+// 	Data      map[string]any `json:"data"`
+// }
+export declare interface RecordEvent {
+  id: number;
+  session_id: number;
+  type: number;
+  timestamp: number;
+  data: any;
+}

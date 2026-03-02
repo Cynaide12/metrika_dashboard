@@ -15,6 +15,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { ru } from "date-fns/locale";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { DateRange } from "react-day-picker";
 
@@ -82,7 +83,9 @@ export const GuestsTable = () => {
                 <TableCell>{guest.sessions_count}</TableCell>
                 <TableCell>позже сделаю</TableCell>
                 <TableCell className={cn(guest.is_online && "text-green-500")}>
-                  {guest.is_online ? "Сейчас на сайте" : "Не в сети"}
+                  <Link href={`/dashboard/guests//${guest.id}`}>
+                    {guest.is_online ? "Сейчас на сайте" : "Не в сети"}
+                  </Link>
                 </TableCell>
               </TableRow>
             ))}

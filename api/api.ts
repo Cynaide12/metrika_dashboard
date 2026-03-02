@@ -10,6 +10,7 @@ import {
   GuestsVisitsResponse,
   LoginRequest,
   LoginResponse,
+  RecordEventsRespomce,
   RegisterRequest,
   RegisterResponse,
 } from "./types";
@@ -189,6 +190,24 @@ export async function getVisitsByInterval(
           interval,
           diviser,
         },
+      }
+    );
+    return res.data;
+  } catch (e: any) {
+    throw e;
+  }
+}
+
+export async function getRecordEvents(
+  domain_id: number,
+  session_id: number
+): Promise<RecordEventsRespomce> {
+  const token = queryClient.getQueryData([ACCESS_TOKEN_QUERY_KEY]);
+  try {
+    const res = await axiosInstance.get<RecordEventsRespomce>(
+      `${config.BASE_API_URL}/analytics/${session_id}/record`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
       }
     );
     return res.data;
